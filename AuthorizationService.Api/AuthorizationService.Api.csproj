@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <RootNamespace>AuthorizationService.Api</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="AutoMapper" Version="13.0.1" />
+        <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+        <PackageReference Include="Dapper" Version="2.1.35" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.7" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="7.1.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="Microsoft.Data.SqlClient, Version=6.0.0.0, Culture=neutral, PublicKeyToken=23ec7fc2d6eaa4a5">
+        <HintPath>C:\Users\causalEwe\.nuget\packages\microsoft.data.sqlclient\6.0.0-preview3.24332.3\ref\net8.0\Microsoft.Data.SqlClient.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\AuthorizationService.Application\AuthorizationService.Application.csproj" />
+      <ProjectReference Include="..\AuthorizationService.Infrastructure\AuthorizationService.Infrastructure.csproj" />
+      <ProjectReference Include="..\AuthorizationService.Domain\AuthorizationService.Domain.csproj" />
+    </ItemGroup>
+
+</Project>

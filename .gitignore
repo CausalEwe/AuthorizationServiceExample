@@ -1,0 +1,67 @@
+# Logs
+logs/
+*.log
+*.log.*
+
+# Dependency directories
+node_modules/
+bin/
+obj/
+dist/
+build/
+
+# Build output
+out/
+*.exe
+*.dll
+*.pdb
+*.cache
+*.lock.json
+
+# Visual Studio specific files
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Rider/JetBrains specific files
+.idea/
+*.iml
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.orig
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# Client-specific (Vue.js)
+Client/node_modules/
+Client/dist/
+Client/.env
+Client/.env.local
+Client/.env.*.local
+
+# Coverage reports
+coverage/
+*.lcov
+
+# Temporary files and cache
+*.sw?
+*.gz
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
