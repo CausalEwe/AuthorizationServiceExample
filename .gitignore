@@ -27,7 +27,6 @@ out/
 
 # Rider/JetBrains specific files
 .idea/
-*.iml
 
 # Environment files
 .env
