@@ -15,14 +15,12 @@ public class AuthRepository : IAuthRepository
 
     public async Task RevokeTokenAsync(int userId)
     {
-        var query =  @"update dbo.tokens set isRevoked = 1 where userId = @userId and isRevoked = 0";
-
         var parameters = new DynamicParameters();
         parameters.Add("userId", userId);
 
         _uow.Begin();
 
-        await _uow.Connection.ExecuteAsync(query, parameters, _uow.Transaction);
+        await _uow.Connection.ExecuteAsync("RevokeToken", parameters, _uow.Transaction);
         await _uow.CompleteAsync();
     }
 
@@ -44,8 +42,6 @@ public class AuthRepository : IAuthRepository
     public async Task AddToken(UserToken userToken)
     {
         // в принципе наверно можно сделать чтобы филд createdAt тригером заполнялся, но я не хочу выносить какую-либо логику из приложения
-        var query = @"insert into dbo.tokens(userId, token, createdAt, expiresAt, isRevoked) values (@userId, @token, @createdAt, @expiresAt, @isRevoked)";
-
         var parameters = new DynamicParameters();
         parameters.Add("userId", userToken.UserId);
         parameters.Add("token", userToken.Token);
@@ -55,7 +51,7 @@ public class AuthRepository : IAuthRepository
 
         _uow.Begin();
 
-        await _uow.Connection.ExecuteAsync(query, parameters, _uow.Transaction);
+        await _uow.Connection.ExecuteAsync("AddToken", parameters, _uow.Transaction);
         await _uow.CompleteAsync();
     }
 

@@ -22,11 +22,6 @@ export const useAuthStore = defineStore('auth', () => {
             return false;
         }
     };
-
-    const logout = () => {
-        token.value = null;
-        localStorage.removeItem('token');
-    };
     
     const isAuthenticated = (): boolean => !!token.value;
 
@@ -34,7 +29,6 @@ export const useAuthStore = defineStore('auth', () => {
         token,
         errorMessage,
         sendLogin,
-        logout,
         isAuthenticated
     };
 });

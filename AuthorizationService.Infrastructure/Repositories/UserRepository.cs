@@ -1,3 +1,4 @@
+using System.Data;
 using AuthorizationService.Domain.Entities;
 using AuthorizationService.Domain.Interfaces;
 using Dapper;
@@ -15,18 +16,17 @@ public class UserRepository : IUserRepository
 
     public async Task RegisterAsync(User user)
     {
-        var query = @"insert into users (login, password, isActive) values (@login, @password, @isActive); SELECT SCOPE_IDENTITY();";
         var parameters = new DynamicParameters();
-
         parameters.Add("login", user.Login);
         parameters.Add("password", user.Password);
         parameters.Add("isActive", user.IsActive);
+        parameters.Add("@newUserId", dbType: DbType.Int32, direction: ParameterDirection.Output);
 
         _uow.Begin();
 
-        var newUserId = await _uow.Connection.ExecuteScalarAsync<int>(query, parameters, _uow.Transaction);
+        var newUserId = await _uow.Connection.ExecuteScalarAsync<int>("AddUser", parameters, _uow.Transaction, commandType: CommandType.StoredProcedure);
 
-        query = @"select id from dbo.roles where name = 'User'";
+        var query = @"select id from dbo.roles where name = 'User'";
         var roleId = await _uow.Connection.ExecuteScalarAsync<int>(query, transaction: _uow.Transaction);
 
         query = @"insert into userRoles values (@userId, @roleId)";
@@ -42,11 +42,9 @@ public class UserRepository : IUserRepository
 
     public async Task<List<User>> GetShortUsersAsync()
     {
-        var query = @"select id, login, isActive from users";
-
         _uow.Begin();
 
-        var result = await _uow.Connection.QueryAsync<User>(query, transaction: _uow.Transaction);
+        var result = await _uow.Connection.QueryAsync<User>("GetShortUsers", transaction: _uow.Transaction);
         await _uow.CompleteAsync();
 
         return result.ToList(); // вообще автомаппер вроде сам материализует коллекцию когда мапит по дефолту в List<T>, думаю решение нужно принимать исходя из стайл кода
