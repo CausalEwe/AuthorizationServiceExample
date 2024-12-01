@@ -12,3 +12,6 @@ Stack:
 2) ms sql
 3) .net 8
 4) vue
+
+I'd be glad to receive feedback. 
+Regards, Sergey.
