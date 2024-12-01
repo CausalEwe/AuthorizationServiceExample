@@ -2,7 +2,6 @@ using System.Data;
 using System.Security.Claims;
 using System.Text;
 using AuthorizationService.Api.Mapping;
-using AuthorizationService.Api.Middlewares;
 using AuthorizationService.Application.Interfaces;
 using AuthorizationService.Application.Services;
 using AuthorizationService.Infrastructure.Repositories;
@@ -130,9 +129,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors("AllowAllOrigins");
-
-// Хеширование паролей
-app.UseMiddleware<PasswordHashingMiddleware>();
 
 app.UseHttpsRedirection();
 app.UseRouting();

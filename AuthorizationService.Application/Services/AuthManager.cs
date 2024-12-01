@@ -38,6 +38,8 @@ public class AuthManager : IAuthManager
             return "A user with this login already exists.";
         }
 
+        user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+
         await _userRepository.RegisterAsync(user);
 
         return "User registered successfully.";
