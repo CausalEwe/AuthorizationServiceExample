@@ -4,11 +4,11 @@
       <div v-if="errorMessage" class="error">{{ errorMessage }}</div>
       
       <div class="form-group">
-        <label for="username">Username</label>
+        <label for="login">Username</label>
         <input
             type="text"
-            id="username"
-            v-model="username"
+            id="login"
+            v-model="login"
             required
         />
       </div>
@@ -35,13 +35,13 @@ export default defineComponent({
   setup() {
     const authStore = useAuthStore();
     
-    const username = ref<string>('');
+    const login = ref<string>('');
     const password = ref<string>('');
     const errorMessage = ref<string | null>(null);
     
     const handleLogin = async () => {
       try {
-        const loginSuccess = await authStore.performLogin({ username: username.value, password: password.value });
+        const loginSuccess = await authStore.sendLogin({ login: login.value, password: password.value });
         if (loginSuccess) {
             window.location.href = '/welcome';
         } else {
@@ -55,7 +55,7 @@ export default defineComponent({
     };
 
     return {
-      username,
+      login,
       password,
       errorMessage,
       handleLogin,

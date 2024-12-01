@@ -61,7 +61,7 @@ public class AuthController : ControllerBase
         {
             HttpOnly = true,
             Secure = true,
-            SameSite = SameSiteMode.Strict,
+            SameSite = SameSiteMode.None,
             Expires = DateTime.UtcNow.AddMinutes(180)
         });
 
@@ -83,20 +83,12 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost]
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [Route("token/revoke")]
     public async Task<IActionResult> RevokeToken(int userId)
     {
         await _authManager.RevokeTokenAsync(userId);
 
-        return Ok();
-    }
-
-    [HttpGet]
-    [Authorize(Roles = "Admin")]
-    [Route("cache")]
-    public async Task<IActionResult> TestCache()
-    {
         return Ok();
     }
 }

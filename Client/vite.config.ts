@@ -22,12 +22,12 @@ export default defineConfig({
       '/api/auth': {
         target: 'https://localhost:5001',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api\/auth/,  '/auth')
+        rewrite: (path) => path.replace(/^\/api\/auth/,  '/api/auth')
       },
-      '/api/users': {
+      '/api/user': {
         target: 'https://localhost:5001',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api\/users/, '/users'),
+        rewrite: (path) => path.replace(/^\/api\/users/, '/api/user'),
       },
     },
   }

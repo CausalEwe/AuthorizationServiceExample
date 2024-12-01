@@ -35,6 +35,19 @@ builder.Services.AddScoped<IUserManager, UserManager>();
 // но естественно есть и другие варианты как сделать так, чтобы бд не доставляла проблем от кучи запросов и сервис был отказоустойчивее
 builder.Services.AddMemoryCache();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllOrigins",
+        policyBuilder =>
+        {
+            policyBuilder
+                .WithOrigins("http://localhost:3000")
+                .WithMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                .AllowAnyHeader()
+                .AllowCredentials();
+        });
+});
+
 builder.Services.AddAuthentication(options =>
     {
         options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -115,6 +128,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("AllowAllOrigins");
 
 // Хеширование паролей
 app.UseMiddleware<PasswordHashingMiddleware>();

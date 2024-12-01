@@ -1,11 +1,11 @@
 <template>
   <div class="user-row">
     <div class="user-info" @click="toggleEdit">
-      <span>{{ user.username }}</span>
+      <span>{{ user.login }}</span>
       <span>{{ user.isActive ? 'Yes' : 'No' }}</span>
     </div>
     <div v-if="isEditing" class="edit-panel">
-      <div>Username: {{ user.username }}</div>
+      <div>Username: {{ user.login }}</div>
       <label>
         Active: <input v-model="isActive" type="checkbox"/>
       </label>
@@ -17,9 +17,9 @@
 <script lang="ts" setup>
 import {ref} from 'vue';
 import {useUsersStore} from '@/stores/usersStore';
-import {User} from "@/types";
+import {ShortUserModel} from "@/types";
 
-const props = defineProps<{ user: User }>();
+const props = defineProps<{ user: ShortUserModel }>();
 const usersStore = useUsersStore();
 
 const isEditing = ref(false);
@@ -30,7 +30,7 @@ const toggleEdit = () => {
 };
 
 const saveChanges = () => {
-  usersStore.modifyUser(props.user.username, isActive.value);
+  usersStore.modifyUser(props.user.id, isActive.value);
   isEditing.value = false;
 };
 </script>

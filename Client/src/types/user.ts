@@ -1,5 +1,5 @@
 export type ShortUserModel = {
-    id: string;
+    id: number;
     login: string;
     isActive: boolean;
 };
