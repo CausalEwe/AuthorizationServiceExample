@@ -28,6 +28,11 @@ public class AuthController : ControllerBase
     [Route("register")]
     public async Task<IActionResult> Register([FromBody]RegisterModel registerModel)
     {
+        if (string.IsNullOrEmpty(registerModel.Login) || string.IsNullOrEmpty(registerModel.Password))
+        {
+            return BadRequest("Wrong data.");
+        }
+
         var message = await _authManager.RegisterAsync(_mapper.Map<User>(registerModel));
 
         return Ok(message);
@@ -48,6 +53,11 @@ public class AuthController : ControllerBase
             {
                 return Conflict("You are already logged in");
             }
+        }
+
+        if (string.IsNullOrEmpty(loginModel.Login) || string.IsNullOrEmpty(loginModel.Password))
+        {
+            return BadRequest("Wrong data.");
         }
 
         var userToken = await _authManager.LoginAsync(_mapper.Map<User>(loginModel));
