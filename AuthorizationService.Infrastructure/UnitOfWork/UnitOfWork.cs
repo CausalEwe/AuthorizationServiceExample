@@ -23,6 +23,8 @@ public class UnitOfWork : IUnitOfWork, IDisposable
         {
             await Task.Run(() => _transaction.Commit());
         }
+
+        _connection.Close();
     }
 
     public void Begin()
