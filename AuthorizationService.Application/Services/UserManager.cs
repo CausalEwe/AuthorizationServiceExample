@@ -1,7 +1,6 @@
 using AuthorizationService.Application.Interfaces;
 using AuthorizationService.Domain.Entities;
 using AuthorizationService.Domain.Interfaces;
-using Microsoft.Extensions.Caching.Memory;
 
 namespace AuthorizationService.Application.Services;
 

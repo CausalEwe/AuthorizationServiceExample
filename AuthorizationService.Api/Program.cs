@@ -1,15 +1,11 @@
-using System.Data;
 using System.Security.Claims;
 using System.Text;
 using AuthorizationService.Api.Mapping;
+using AuthorizationService.Application;
 using AuthorizationService.Application.Interfaces;
-using AuthorizationService.Application.Services;
-using AuthorizationService.Infrastructure.Repositories;
-using AuthorizationService.Infrastructure.UnitOfWork;
-using AuthorizationService.Domain.Interfaces;
+using AuthorizationService.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.Data.SqlClient;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 
@@ -22,13 +18,6 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-builder.Services.AddScoped<IDbConnection>(sp =>
-    new SqlConnection(builder.Configuration.GetConnectionString("DefaultConnection")));
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IAuthRepository, AuthRepository>();
-builder.Services.AddScoped<IAuthManager, AuthManager>();
-builder.Services.AddScoped<IUserManager, UserManager>();
 
 // для токенов, мемори конечно такое себе, но подкручивать что-то типа редиса это оверхед для тестового задания наверное)
 // но естественно есть и другие варианты как сделать так, чтобы бд не доставляла проблем от кучи запросов и сервис был отказоустойчивее
@@ -46,6 +35,9 @@ builder.Services.AddCors(options =>
                 .AllowCredentials();
         });
 });
+
+builder.Services.AddApplication();
+builder.Services.AddInfrastructure(builder.Configuration);
 
 builder.Services.AddAuthentication(options =>
     {
@@ -109,7 +101,7 @@ builder.Services.AddAuthentication(options =>
 
         options.RequireHttpsMetadata = false;
         options.SaveToken = true;
-        options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+        options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
             ValidateAudience = true,
@@ -117,7 +109,7 @@ builder.Services.AddAuthentication(options =>
             ValidIssuer = builder.Configuration["Jwt:Issuer"],
             ValidAudience = builder.Configuration["Jwt:Audience"],
             IssuerSigningKey =
-                new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(
+                new SymmetricSecurityKey(
                     Encoding.UTF8.GetBytes(builder.Configuration["Jwt:SecretKey"]))
         };
     });

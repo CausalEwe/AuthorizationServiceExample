@@ -1,7 +1,7 @@
 using System.Data;
 using AuthorizationService.Domain.Interfaces;
 
-namespace AuthorizationService.Infrastructure.UnitOfWork;
+namespace AuthorizationService.Infrastructure.UoW;
 
 public class UnitOfWork : IUnitOfWork, IDisposable
 {
